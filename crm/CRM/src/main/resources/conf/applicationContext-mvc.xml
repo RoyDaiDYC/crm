@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--截取URL请求-->
+    <mvc:default-servlet-handler/>
+    <!--扫描controller文件-->
+    <context:component-scan base-package="com.yuchengdai.crm.web.controller"/>
+    <context:component-scan base-package="com.yuchengdai.crm.settings.web.controller"/>
+    <context:component-scan base-package="com.yuchengdai.crm.workbench.web.controller"/>
+
+    <!--配置注解驱动-->
+    <mvc:annotation-driven/>
+
+    <!--配置视图解析器-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--拦截的内容-->
+            <mvc:mapping path="/settings/**"/>
+            <mvc:mapping path="/workbench/**"/>
+            <!--不拦截的内容-->
+            <mvc:exclude-mapping path="/settings/qx/user/login.do"/>
+            <mvc:exclude-mapping path="/settings/qx/user/toLogin.do"/>
+            <bean class="com.yuchengdai.crm.settings.web.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!--配置文件上传multi-part，处理多样性文件-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--配置上传文件格式-->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--配置上传文件大小限制-->
+        <property name="maxUploadSize" value="#{10*1024*1024}"/>
+    </bean>
+
+
+</beans>
