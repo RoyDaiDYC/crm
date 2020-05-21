@@ -2,11 +2,8 @@
 ----------CRM项目----------
 
 整体框架：SSM
-
 版本控制：Maven
-
 测试使用服务器：Tomcat
-
 后端运用：
   框架：持久层：mybatis；业务层：Java；视图层：springMVC
   数据库：MySQL
